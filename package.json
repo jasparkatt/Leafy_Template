@@ -1,0 +1,38 @@
+{
+  "name": "template",
+  "version": "0.0.1",
+  "description": "leaflet template for central wisconsin area",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasparkatt/Leafy_Template.git"
+  },
+  "keywords": [
+    "wisconsin",
+    "leaflet",
+    "javascript",
+    "template"
+  ],
+  "author": "Jaspar Katt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jasparkatt/Leafy_Template/issues"
+  },
+  "homepage": "https://github.com/jasparkatt/Leafy_Template#readme",
+  "devDependencies": {
+    "del": "^4.1.1",
+    "gulp": "^4.0.1",
+    "gulp-htmlclean": "^2.7.22",
+    "gulp-imagemin": "^5.0.3",
+    "gulp-newer": "^1.4.0",
+    "gulp-rename": "^1.4.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.1",
+    "leaflet": "^1.4.0"
+  }
+}
