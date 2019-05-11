@@ -22,7 +22,7 @@ function cssTask(){
     .pipe(plumber())
     .pipe(cleanCss())
     .pipe(rename('main.min.css'))
-    .pipe(dest('dist/style'));
+    .pipe(dest('dist/style/'));
 }
 exports.default = cssTask
 
