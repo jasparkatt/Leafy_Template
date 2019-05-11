@@ -14,15 +14,30 @@ const uglify = require("gulp-uglify");//minify js
 //construct some file paths
 const files = {
     jsPath: 'src/scripts/*.js',
-    cssPath: 'src/style/*.css'
+    cssPath: 'src/style/*.css',
+    stylesBuild: './dist/styles/', // this is where the minified, compiled css will go
+    jsBuild: './dist/scripts/'//this is where the minified js will go
 }
+//clean out build folder i.e dist
+function clean(){
+    return del(['./dist']);
+}
+
 //css task
 function cssTask(){
     return src(files.cssPath)
     .pipe(plumber())
     .pipe(cleanCss())
     .pipe(rename('main.min.css'))
-    .pipe(dest('dist/style'));
+    .pipe(dest(files.stylesBuild));
 }
-exports.default = cssTask
+//js task
+function jsTask(){
+    return src(files.jsPath)
+    .pipe(plumber())
+    .pipe(uglify())
+    .pipe(rename('main.min.js'))
+    .pipe(dest(files.jsBuild))
+}
+exports.default = cssTask//need to define the tsasks to css js tasks in series or parallel
 
