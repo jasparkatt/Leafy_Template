@@ -16,11 +16,13 @@ const files = {
     jsPath: 'src/scripts/*.js',
     cssPath: 'src/style/*.css',
     stylesBuild: './dist/styles/', // this is where the minified, compiled css will go
-    jsBuild: './dist/scripts/'//this is where the minified js will go
+    jsBuild: './dist/scripts/',//this is where the minified js will go
+    deletedPaths: './dist',//delete the dist dir before a new build
 }
 //clean out build folder i.e dist
 function clean(){
-    return del(['./dist']);
+    await del([files.deletedPaths], {dryRun: true});
+    console.log('Files and folders that would be deleted:\n', files.deletedPaths.join('\n'));
 }
 
 //css task
@@ -39,5 +41,7 @@ function jsTask(){
     .pipe(rename('main.min.js'))
     .pipe(dest(files.jsBuild))
 }
-exports.default = cssTask//need to define the tsasks to css js tasks in series or parallel
-
+//create exported tasks to make it easier to plug into other stuff e.g series parallel etc
+exports.cssTask = cssTask;
+exports.jsTask = jsTask;
+exports.clean = clean;
