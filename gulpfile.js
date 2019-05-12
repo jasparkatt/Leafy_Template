@@ -21,7 +21,7 @@ const files = {
 }
 //clean out build folder i.e dist
 function clean(){
-    return del([files.deletedPaths], {dryRun: true});
+    return del([files.deletedPaths]);
     console.log('Files and folders that would be deleted:\n', files.deletedPaths.join('\n'));
 }
 
@@ -41,7 +41,19 @@ function jsTask(){
     .pipe(rename('main.min.js'))
     .pipe(dest(files.jsBuild))
 }
+//create some watch tasks
+function watchTask(){
+    watch([files.cssPath, files.jsPath]),
+        parallel(cssTask,jsTask)
+}
 //create exported tasks to make it easier to plug into other stuff e.g series parallel etc
 exports.cssTask = cssTask;
 exports.jsTask = jsTask;
 exports.clean = clean;
+exports.watchTask = watchTask;
+//set some series or parallels
+exports.default = series(
+    clean,
+    parallel(cssTask, jsTask),
+    watchTask
+);
