@@ -10,14 +10,18 @@ const plumber = require("gulp-plumber"); //prevent pipe breaking
 const cleanCss = require("gulp-clean-css");//minify css
 const htmlmin = require("gulp-htmlmin");//minify html
 const uglify = require("gulp-uglify");//minify js
+const copyNodeModules = require("copy-node-modules");
+const shell = require("gulp-shell");
 
 //construct some file paths
 const files = {
     jsPath: 'src/scripts/*.js',
     cssPath: 'src/style/*.css',
     htmlPath: './index.html',
+    nodePath: './',
     stylesBuild: './dist/styles/', // this is where the minified, compiled css will go
     jsBuild: './dist/scripts/',//this is where the minified js will go
+    nodeBuild: '.dist/',
     deletedPaths: './dist',//delete the dist dir before a new build
 }
 //clean out build folder i.e dist
@@ -50,6 +54,11 @@ function htmlTask(){
     .pipe(rename('index.min.html'))
     .pipe(dest(files.deletedPaths))
 }
+//copy needed packages from node folder i.e leaflet
+function nodeTask(){
+    return src(files.nodePath)
+    .pipe(shell('node copyNode'))
+}
 //create some watch tasks
 function watchTask(){
     watch([files.cssPath, files.jsPath, files.htmlPath]),
@@ -61,6 +70,7 @@ exports.jsTask = jsTask;
 exports.htmlTask = htmlTask;
 exports.clean = clean;
 exports.watchTask = watchTask;
+exports.nodeTask = nodeTask;
 //set some series or parallels
 exports.default = series(
     clean,

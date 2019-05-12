@@ -4,7 +4,8 @@
   "description": "leaflet template for central wisconsin area",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+      "copyNode": "copyNode"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   },
   "homepage": "https://github.com/jasparkatt/Leafy_Template#readme",
   "devDependencies": {
+    "copy-node-modules": "^1.1.1",
     "del": "^4.1.1",
     "gulp": "^4.0.1",
     "gulp-clean-css": "^4.2.0",
@@ -31,6 +33,7 @@
     "gulp-newer": "^1.4.0",
     "gulp-plumber": "^1.2.1",
     "gulp-rename": "^1.4.0",
+    "gulp-shell": "^0.7.0",
     "gulp-uglify": "^3.0.2"
   },
   "dependencies": {
