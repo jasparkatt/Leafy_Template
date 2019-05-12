@@ -15,6 +15,7 @@ const uglify = require("gulp-uglify");//minify js
 const files = {
     jsPath: 'src/scripts/*.js',
     cssPath: 'src/style/*.css',
+    htmlPath: './index.html',
     stylesBuild: './dist/styles/', // this is where the minified, compiled css will go
     jsBuild: './dist/scripts/',//this is where the minified js will go
     deletedPaths: './dist',//delete the dist dir before a new build
@@ -41,19 +42,28 @@ function jsTask(){
     .pipe(rename('main.min.js'))
     .pipe(dest(files.jsBuild))
 }
+function htmlTask(){
+    return src(files.htmlPath)
+    .pipe(plumber())
+    .pipe(htmlmin({removeComments: true}))
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(rename('index.min.html'))
+    .pipe(dest(files.deletedPaths))
+}
 //create some watch tasks
 function watchTask(){
-    watch([files.cssPath, files.jsPath]),
-        parallel(cssTask,jsTask)
+    watch([files.cssPath, files.jsPath, files.htmlPath]),
+        parallel(cssTask,jsTask,htmlTask)
 }
 //create exported tasks to make it easier to plug into other stuff e.g series parallel etc
 exports.cssTask = cssTask;
 exports.jsTask = jsTask;
+exports.htmlTask = htmlTask;
 exports.clean = clean;
 exports.watchTask = watchTask;
 //set some series or parallels
 exports.default = series(
     clean,
-    parallel(cssTask, jsTask),
+    parallel(cssTask, jsTask, htmlTask),
     watchTask
 );
