@@ -21,7 +21,7 @@ const files = {
 }
 //clean out build folder i.e dist
 function clean(){
-    await del([files.deletedPaths], {dryRun: true});
+    return del([files.deletedPaths], {dryRun: true});
     console.log('Files and folders that would be deleted:\n', files.deletedPaths.join('\n'));
 }
 
