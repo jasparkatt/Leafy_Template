@@ -55,6 +55,8 @@ function htmlTask(){
     .pipe(dest(files.deletedPaths))
 }
 //copy needed packages from node folder i.e leaflet
+//need to tweek code to just keep the js/css you need
+//can probably do something similar to this for plugins folder copyover
 function nodeTask(){
     return src(files.nodePath)
     .pipe(shell('node copyNode'))
@@ -74,6 +76,7 @@ exports.nodeTask = nodeTask;
 //set some series or parallels
 exports.default = series(
     clean,
+    nodeTask,
     parallel(cssTask, jsTask, htmlTask),
     watchTask
 );
