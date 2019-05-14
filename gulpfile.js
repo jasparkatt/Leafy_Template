@@ -46,6 +46,7 @@ function jsTask(){
     .pipe(rename('main.min.js'))
     .pipe(dest(files.jsBuild))
 }
+//html tasks
 function htmlTask(){
     return src(files.htmlPath)
     .pipe(plumber())
