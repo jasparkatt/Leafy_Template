@@ -27,7 +27,7 @@ var myStyle = {
             };
 
 $(document).ready(function(){
-    mymap = L.map('jeebmap', {center:[44.505, -89.548], zoom:9, zoomControl:false, attributionControl:false});
+    mymap = L.map('map', {center:[44.505, -89.548], zoom:9, zoomControl:false, attributionControl:false});
     lyrOsm = L.tileLayer.provider('OpenStreetMap.Mapnik');
     lyrTopo = L.tileLayer.provider('Thunderforest.Outdoors', {apikey:  'c5765bcedc4c418493a2e018e456b08a'});
     lyrImagery = L.tileLayer.provider('Esri.WorldImagery');
