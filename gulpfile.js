@@ -15,6 +15,7 @@ const shell = require("gulp-shell");
 
 //construct some file paths
 const files = {
+    //runPath: './src/',
     jsPath: 'src/scripts/*.js',
     cssPath: 'src/style/*.css',
     htmlPath: './index.html',
