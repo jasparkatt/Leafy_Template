@@ -12,17 +12,20 @@ const htmlmin = require("gulp-htmlmin");//minify html
 const uglify = require("gulp-uglify");//minify js
 const copyNodeModules = require("copy-node-modules");
 const shell = require("gulp-shell");
+const concat = require("gulp-concat");
+const sourcemaps = require("gulp-sourcemaps");
 
 //construct some file paths
 const files = {
-    //runPath: './src/',
+    corePath: 'src/core_scripts/',
     jsPath: 'src/scripts/*.js',
     cssPath: 'src/style/*.css',
-    htmlPath: './index.html',
+    htmlPath: 'src/index.html',
     nodePath: './',
     stylesBuild: './dist/styles/', // this is where the minified, compiled css will go
     jsBuild: './dist/scripts/',//this is where the minified js will go
     nodeBuild: '.dist/',
+    coreBuild: './dist/core_scripts/',//this is where the plugin js and css will go after being min and conct
     deletedPaths: './dist',//delete the dist dir before a new build
 }
 //clean out build folder i.e dist
@@ -55,6 +58,13 @@ function htmlTask(){
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(rename('index.min.html'))
     .pipe(dest(files.deletedPaths))
+}
+//copy and minify and concat the js and css
+//found in src core_scripts. these are standard
+//leaflet plugins
+//core scripts task
+function coreTask(){
+
 }
 //copy needed packages from node folder i.e leaflet
 //need to tweek code to just keep the js/css you need
