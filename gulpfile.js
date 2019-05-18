@@ -37,7 +37,7 @@ function clean(){
     return del([files.deletedPaths]);
     console.log('Files and folders that would be deleted:\n', files.deletedPaths.join('\n'));
 }
-//need task to copy over favicons
+//need task to copy over faviconslook at buffer
 //need a minify image task for pngs
 function imgTask(){
     return src(files.imgPath)
