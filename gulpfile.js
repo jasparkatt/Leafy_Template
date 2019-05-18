@@ -29,6 +29,7 @@ const files = {
     nodeBuild: '.dist/',
     coreBuild: './dist/core_scripts/',//this is where the plugin js and css will go after being min and conct
     sourcemapsBuild: '../',
+    imgBuild: './dist/img/',
     deletedPaths: './dist',//delete the dist dir before a new build
 }
 //clean out build folder i.e dist
@@ -38,6 +39,12 @@ function clean(){
 }
 
 //need a minify image task for pngs
+function imgTask(){
+    return src(files.imgPath)
+    .pipe(plumber())
+    .pipe(imagemin())
+    .pipe(dest(files.imgBuild))
+}
 //need a minify the css and html after concat too
 
 //css task
@@ -46,7 +53,7 @@ function cssTask(){
     .pipe(plumber())
     .pipe(cleanCss())
     .pipe(rename('main.min.css'))
-    .pipe(dest(files.stylesBuild));
+    .pipe(dest(files.stylesBuild))
 }
 //js task
 function jsTask(){
@@ -73,6 +80,7 @@ function coreCssTask(){
     return src(files.coreCssPath)
     .pipe(sourcemaps.init())
         .pipe(concat('core.css'))
+        .pipe(cleanCss('core.css'))
     .pipe(sourcemaps.write(files.sourcemapsBuild))
     .pipe(dest(files.coreBuild))
 }
@@ -97,6 +105,7 @@ function watchTask(){
         parallel(cssTask,jsTask,htmlTask)
 }
 //create exported tasks to make it easier to plug into other stuff e.g series parallel etc
+exports.imgTask = imgTask;
 exports.cssTask = cssTask;
 exports.jsTask = jsTask;
 exports.htmlTask = htmlTask;
@@ -109,6 +118,6 @@ exports.coreJsTask = coreJsTask;
 exports.default = series(
     clean,
     nodeTask,
-    parallel(cssTask, jsTask, htmlTask, coreCssTask, coreJsTask),
+    parallel(imgTask, cssTask, jsTask, htmlTask, coreCssTask, coreJsTask),
     watchTask
 );
