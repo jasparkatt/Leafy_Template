@@ -12,19 +12,19 @@ var ctlMouseposition;
 var ctlMeasure;
 var ctlEasybutton;
 var ctlSidebar;
-var ctlSearch;
+//var ctlSearch;
 var ctlLayers;
 var ctlBasemaps;
 var ctlOverlays;
 
 
-var myStyle = {
+/*var myStyle = {
                 color: "#994c00",
                 weight: 4,
                 opacity: 1,
                 dashArray: "4",
                 fillOpacity: 1
-            };
+            };*/
 
 $(document).ready(function(){
     mymap = L.map('map', {center:[44.505, -89.548], zoom:9, zoomControl:false, attributionControl:false});
@@ -57,7 +57,7 @@ $(document).ready(function(){
     ctlEasybutton = L.easyButton('glyphicon-transfer', function() {
         ctlSidebar.toggle();
     }).addTo(mymap);
-    ctlSearch = L.Control.openCageSearch({key:'2c5ac0078d3c41818104b47d0c6db364', limit:10}).addTo(mymap);
+    //ctlSearch = L.Control.openCageSearch({key:'2c5ac0078d3c41818104b47d0c6db364', limit:10}).addTo(mymap);
 
     ctlAttribute = L.control.attribution({position:'bottomright'}).addTo(mymap);
     ctlAttribute.addAttribution('<a href="https://www.openstreetmap.org">OSM</a>')
