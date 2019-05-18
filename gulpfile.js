@@ -14,9 +14,10 @@ const copyNodeModules = require("copy-node-modules");
 const shell = require("gulp-shell");
 const concat = require("gulp-concat");
 const sourcemaps = require("gulp-sourcemaps");
-
+const imagemin = require('gulp-imagemin');
 //construct some file paths
 const files = {
+    imgPath: 'src/img/*.png',
     coreCssPath: 'src/core_scripts/*.css',//may need to explicity set order if this doesnt work?
     coreJsPath: 'src/core_scripts/*.js',//ditto ^^
     jsPath: 'src/scripts/*.js',
