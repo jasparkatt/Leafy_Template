@@ -17,7 +17,8 @@ const sourcemaps = require("gulp-sourcemaps");
 
 //construct some file paths
 const files = {
-    coreCssPath: 'src/core_scripts/*.css',
+    coreCssPath: 'src/core_scripts/*.css',//may need to explicity set order if this doesnt work?
+    coreJsPath: 'src/core_scripts/*.js',//ditto ^^
     jsPath: 'src/scripts/*.js',
     cssPath: 'src/style/*.css',
     htmlPath: 'src/index.html',
@@ -34,6 +35,9 @@ function clean(){
     return del([files.deletedPaths]);
     console.log('Files and folders that would be deleted:\n', files.deletedPaths.join('\n'));
 }
+
+//need a minify image task for pngs
+//need a minify the css and html after concat too
 
 //css task
 function cssTask(){
@@ -71,6 +75,14 @@ function coreCssTask(){
     .pipe(sourcemaps.write(files.sourcemapsBuild))
     .pipe(dest(files.coreBuild))
 }
+function coreJsTask(){
+    return src(files.coreJsPath)
+    .pipe(sourcemaps.init())
+        .pipe(concat('core.js'))
+    .pipe(sourcemaps.write(files.sourcemapsBuild))
+    .pipe(dest(files.coreBuild))
+}
+
 //copy needed packages from node folder i.e leaflet
 //need to tweek code to just keep the js/css you need
 //can probably do something similar to this for plugins folder copyover
@@ -91,10 +103,11 @@ exports.clean = clean;
 exports.watchTask = watchTask;
 exports.nodeTask = nodeTask;
 exports.coreCssTask = coreCssTask;
+exports.coreJsTask = coreJsTask;
 //set some series or parallels
 exports.default = series(
     clean,
     nodeTask,
-    parallel(cssTask, jsTask, htmlTask, coreCssTask),
+    parallel(cssTask, jsTask, htmlTask, coreCssTask, coreJsTask),
     watchTask
 );
