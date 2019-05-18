@@ -17,7 +17,7 @@ const sourcemaps = require("gulp-sourcemaps");
 
 //construct some file paths
 const files = {
-    corePath: 'src/core_scripts/',
+    coreCssPath: 'src/core_scripts/*.css',
     jsPath: 'src/scripts/*.js',
     cssPath: 'src/style/*.css',
     htmlPath: 'src/index.html',
@@ -26,6 +26,7 @@ const files = {
     jsBuild: './dist/scripts/',//this is where the minified js will go
     nodeBuild: '.dist/',
     coreBuild: './dist/core_scripts/',//this is where the plugin js and css will go after being min and conct
+    sourcemapsBuild: '../',
     deletedPaths: './dist',//delete the dist dir before a new build
 }
 //clean out build folder i.e dist
@@ -63,8 +64,12 @@ function htmlTask(){
 //found in src core_scripts. these are standard
 //leaflet plugins
 //core scripts task
-function coreTask(){
-
+function coreCssTask(){
+    return src(files.coreCssPath)
+    .pipe(sourcemaps.init())
+        .pipe(concat('core.css'))
+    .pipe(sourcemaps.write(files.sourcemapsBuild))
+    .pipe(dest(files.coreBuild))
 }
 //copy needed packages from node folder i.e leaflet
 //need to tweek code to just keep the js/css you need
@@ -85,10 +90,11 @@ exports.htmlTask = htmlTask;
 exports.clean = clean;
 exports.watchTask = watchTask;
 exports.nodeTask = nodeTask;
+exports.coreCssTask = coreCssTask;
 //set some series or parallels
 exports.default = series(
     clean,
     nodeTask,
-    parallel(cssTask, jsTask, htmlTask),
+    parallel(cssTask, jsTask, htmlTask, coreCssTask),
     watchTask
 );
