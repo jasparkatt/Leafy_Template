@@ -12,7 +12,8 @@ var ctlMouseposition;
 var ctlMeasure;
 var ctlEasybutton;
 var ctlSidebar;
-//var ctlSearch;
+var ctlSearch;
+var ctlResults;
 var ctlLayers;
 var ctlBasemaps;
 var ctlOverlays;
@@ -57,8 +58,17 @@ $(document).ready(function(){
     ctlEasybutton = L.easyButton('glyphicon-transfer', function() {
         ctlSidebar.toggle();
     }).addTo(mymap);
-    //ctlSearch = L.Control.openCageSearch({key:'2c5ac0078d3c41818104b47d0c6db364', limit:10}).addTo(mymap);
-
+    //add esri geocoder search box
+    ctlSearch = L.esri.Geocoding.geosearch().addTo(mymap);
+    // create an empty layer group to store the results and add it to the map
+    ctlResults = L.layerGroup().addTo(mymap);
+    // listen for the results event and add every result to the map
+    ctlSearch.on("ctlResults", function(data) {
+        ctlResults.clearLayers();
+        for (var i = data.ctlResults.length - 1; i >= 0; i--) {
+            ctlResults.addLayer(L.marker(data.ctlResults[i].latlng));
+        }
+    });
     ctlAttribute = L.control.attribution({position:'bottomright'}).addTo(mymap);
     ctlAttribute.addAttribution('<a href="https://www.openstreetmap.org">OSM</a>')
     ctlAttribute.addAttribution('&copy; Left Handed Data, LLC');
@@ -83,11 +93,11 @@ $(document).ready(function(){
 
     mymap.on('moveend', function(){
         $("#map-center").html(LatLngToArrayString(mymap.getCenter()));
-    });
-
-    mymap.on('mousemove', function(e){
-        $("#mouse-location").html(LatLngToArrayString(e.latlng));
     });*/
+
+//    mymap.on('mousemove', function(e){
+//        $("#mouse-location").html(LatLngToArrayString(e.latlng));
+//    });
 
     $("#btnLocate").click(function(){
         mymap.locate();

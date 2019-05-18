@@ -39,6 +39,7 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "esri-leaflet": "^2.2.4",
+    "esri-leaflet-geocoder": "^2.2.14",
     "jquery": "^3.4.1",
     "leaflet": "^1.5.1",
     "leaflet-easybutton": "^2.4.0",
