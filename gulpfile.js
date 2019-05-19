@@ -44,8 +44,8 @@ const files = {
 //create our dev server
 function serve() {
   return browserSync.init({
-    server: 'build',
-    open: false,
+    server: 'dist',
+    open: true,
     port: 3000
   });
 }
