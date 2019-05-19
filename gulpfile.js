@@ -15,6 +15,8 @@ const shell = require("gulp-shell");
 const concat = require("gulp-concat");
 const sourcemaps = require("gulp-sourcemaps");
 const imagemin = require('gulp-imagemin');
+const copy = require("gulp-copy");
+
 //construct some file paths
 const files = {
     imgPath: 'src/img/*.png',
@@ -42,6 +44,11 @@ function clean(){
     console.log('Files and folders that would be deleted:\n', files.deletedPaths.join('\n'));
 }
 //need task to copy over faviconslook at buffer
+function copyFav(){
+    return src('./favicon.ico')
+    .pipe(copy('dist',{prefix:1}))
+    .pipe(dest('./'));
+}
 //need a minify image task for pngs
 function imgTask(){
     return src(files.imgPath)
@@ -120,6 +127,7 @@ function watchTask(){
         parallel(cssTask,jsTask,htmlTask)
 }
 //create exported tasks to make it easier to plug into other stuff e.g series parallel etc
+exports.copyFav = copyFav;
 exports.imgTask = imgTask;
 exports.cssTask = cssTask;
 exports.jsTask = jsTask;
@@ -135,7 +143,7 @@ exports.concatCssTask = concatCssTask; */
 exports.default = series(
     clean,
     nodeTask,
-    parallel(imgTask, cssTask, jsTask, htmlTask, coreCssTask, coreJsTask),
+    parallel(imgTask,copyFav, cssTask, jsTask, htmlTask, coreCssTask, coreJsTask),
     watchTask
 );
 exports.cleanCor = series(
@@ -143,6 +151,7 @@ exports.cleanCor = series(
     nodeTask,
     parallel(cssTask, jsTask, htmlTask),
     imgTask,
+    copyFav,
     parallel(coreCssTask, coreJsTask)
     // parallel(concatjsTask, concatCssTask)
 );
