@@ -31,6 +31,10 @@ const files = {
     sourcemapsBuild: '../',
     imgBuild: './dist/img/',
     deletedPaths: './dist',//delete the dist dir before a new build
+    /* conJsmain: './dist/scripts/main.min.js',
+    conJscore: './dist/core_scripts/core.js',
+    conCssmain: './dist/styles/main.min.css',
+    conCsscore: './dist/core_scripts/core.css' */
 }
 //clean out build folder i.e dist
 function clean(){
@@ -79,18 +83,29 @@ function htmlTask(){
 function coreCssTask(){
     return src(files.coreCssPath)
     .pipe(sourcemaps.init())
-        .pipe(concat('core.css'))
-        .pipe(cleanCss('core.css'))
+        .pipe(cleanCss('*.css'))
+        .pipe(concat('core.css'))        
     .pipe(sourcemaps.write(files.sourcemapsBuild))
     .pipe(dest(files.coreBuild))
 }
 function coreJsTask(){
     return src(files.coreJsPath)
     .pipe(sourcemaps.init())
+        .pipe(uglify('*.js'))
         .pipe(concat('core.js'))
     .pipe(sourcemaps.write(files.sourcemapsBuild))
     .pipe(dest(files.coreBuild))
 }
+/* function concatjsTask(){
+    return src(files.conJsmain, files.conJscore)
+    .pipe(concat('main.js'))
+    .pipe(dest(files.jsBuild))
+}
+function concatCssTask(){
+    return src(files.conCssmain, files.conCsscore)
+    .pipe(concat('main.css'))
+    .pipe(dest(files.stylesBuild))
+} */
 
 //copy needed packages from node folder i.e leaflet
 //need to tweek code to just keep the js/css you need
@@ -114,10 +129,20 @@ exports.watchTask = watchTask;
 exports.nodeTask = nodeTask;
 exports.coreCssTask = coreCssTask;
 exports.coreJsTask = coreJsTask;
+/* exports.concatjsTask = concatjsTask;
+exports.concatCssTask = concatCssTask; */
 //set some series or parallels
 exports.default = series(
     clean,
     nodeTask,
     parallel(imgTask, cssTask, jsTask, htmlTask, coreCssTask, coreJsTask),
     watchTask
+);
+exports.cleanCor = series(
+    clean,
+    nodeTask,
+    parallel(cssTask, jsTask, htmlTask),
+    imgTask,
+    parallel(coreCssTask, coreJsTask)
+    // parallel(concatjsTask, concatCssTask)
 );
