@@ -27,6 +27,7 @@
     "copy-node-modules": "^1.1.1",
     "del": "^4.1.1",
     "gulp": "^4.0.1",
+    "gulp-cache": "^1.1.1",
     "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
     "gulp-copy": "^4.0.1",
@@ -35,6 +36,7 @@
     "gulp-newer": "^1.4.0",
     "gulp-plumber": "^1.2.1",
     "gulp-rename": "^1.4.0",
+    "gulp-replace": "^1.0.0",
     "gulp-shell": "^0.7.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.2"

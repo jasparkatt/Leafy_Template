@@ -16,6 +16,8 @@ const concat = require("gulp-concat");
 const sourcemaps = require("gulp-sourcemaps");
 const imagemin = require('gulp-imagemin');
 const copy = require("gulp-copy");
+const cacheClean = require("gulp-cache");
+const replace = require('gulp-replace');
 
 //construct some file paths
 const files = {
@@ -37,6 +39,13 @@ const files = {
     conJscore: './dist/core_scripts/core.js',
     conCssmain: './dist/styles/main.min.css',
     conCsscore: './dist/core_scripts/core.css' */
+}
+//clean cache for live reload issues....
+var cbString = new Date().getTime();
+function cacheBustTask(){
+    return src(files.htmlPath)
+        .pipe(replace(/cb=\d+/, 'cb=' + cbString))
+        .pipe(dest('.'));
 }
 //clean out build folder i.e dist
 function clean(){
@@ -127,6 +136,7 @@ function watchTask(){
         parallel(cssTask,jsTask,htmlTask)
 }
 //create exported tasks to make it easier to plug into other stuff e.g series parallel etc
+exports.cacheBustTask = cacheBustTask;
 exports.copyFav = copyFav;
 exports.imgTask = imgTask;
 exports.cssTask = cssTask;
