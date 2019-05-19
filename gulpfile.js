@@ -18,6 +18,7 @@ const imagemin = require('gulp-imagemin');
 const copy = require("gulp-copy");
 const cacheClean = require("gulp-cache");
 const replace = require('gulp-replace');
+const browserSync = require('browser-sync');
 
 //construct some file paths
 const files = {
@@ -39,6 +40,14 @@ const files = {
     conJscore: './dist/core_scripts/core.js',
     conCssmain: './dist/styles/main.min.css',
     conCsscore: './dist/core_scripts/core.css' */
+}
+//create our dev server
+function serve() {
+  return browserSync.init({
+    server: 'build',
+    open: false,
+    port: 3000
+  });
 }
 //clean cache for live reload issues....
 var cbString = new Date().getTime();
@@ -133,7 +142,10 @@ function nodeTask(){
 //create some watch tasks
 function watchTask(){
     watch([files.cssPath, files.jsPath, files.htmlPath]),
-        parallel(cssTask,jsTask,htmlTask)
+        cacheBustTask,
+        parallel(cssTask,jsTask,htmlTask),
+        parallel(coreCssTask, coreJsTask),
+        serve
 }
 //create exported tasks to make it easier to plug into other stuff e.g series parallel etc
 exports.cacheBustTask = cacheBustTask;
@@ -153,8 +165,7 @@ exports.concatCssTask = concatCssTask; */
 exports.default = series(
     clean,
     nodeTask,
-    parallel(imgTask,copyFav, cssTask, jsTask, htmlTask, coreCssTask, coreJsTask),
-    watchTask
+    parallel(imgTask,copyFav, cssTask, jsTask, htmlTask, coreCssTask, coreJsTask)
 );
 exports.cleanCor = series(
     cacheBustTask,
@@ -164,4 +175,9 @@ exports.cleanCor = series(
     parallel(imgTask,copyFav),
     parallel(coreCssTask, coreJsTask)
     // parallel(concatjsTask, concatCssTask)
+);
+exports.rebuild = series(
+cacheBustTask,
+parallel(cssTask, jsTask, htmlTask),
+serve
 );
