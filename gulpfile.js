@@ -157,11 +157,11 @@ exports.default = series(
     watchTask
 );
 exports.cleanCor = series(
+    cacheBustTask,
     clean,
     nodeTask,
     parallel(cssTask, jsTask, htmlTask),
-    imgTask,
-    copyFav,
+    parallel(imgTask,copyFav),
     parallel(coreCssTask, coreJsTask)
     // parallel(concatjsTask, concatCssTask)
 );
