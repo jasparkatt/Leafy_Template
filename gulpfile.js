@@ -44,7 +44,7 @@ const files = {
 //create our dev server
 function serve() {
   return browserSync.init({
-    server: 'dist',
+    server: './',
     open: true,
     port: 3000
   });
@@ -181,3 +181,9 @@ cacheBustTask,
 parallel(cssTask, jsTask, htmlTask),
 serve
 );
+exports.devtst = series(
+cacheBustTask,
+serve);
+//need to figure out task to use jsut the html from ./
+//to run against the css and js in the src folder.
+//and have that particular build be used by server
