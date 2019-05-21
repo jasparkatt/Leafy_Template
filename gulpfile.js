@@ -159,6 +159,7 @@ exports.watchTask = watchTask;
 exports.nodeTask = nodeTask;
 exports.coreCssTask = coreCssTask;
 exports.coreJsTask = coreJsTask;
+exports.serve = serve;
 /* exports.concatjsTask = concatjsTask;
 exports.concatCssTask = concatCssTask; */
 //set some series or parallels
@@ -187,3 +188,5 @@ serve);
 //need to figure out task to use jsut the html from ./
 //to run against the css and js in the src folder.
 //and have that particular build be used by server
+//create a temp folder and pipe the css and js from styles
+//and scripts in src and the index.html from the root
