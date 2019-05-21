@@ -53,7 +53,8 @@ function serve() {
 //clean cache for live reload issues....
 //need to change the src files so it doensnt change the index.html file in root on task run
 var cbString = new Date().getTime();
-
+//try switching the return src value to ./ so it doesn't overwrite the index.html found there
+//will need to double check that it isn't replacing the src/index.html with that one from the root tho
 function cacheBustTask() {
     return src(files.htmlPath)
         .pipe(replace(/cb=\d+/, 'cb=' + cbString))
