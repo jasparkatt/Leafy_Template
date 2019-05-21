@@ -203,3 +203,4 @@ exports.devtst = series(
 //and have that particular build be used by server
 //create a temp folder and pipe the css and js from styles
 //and scripts in src and the index.html from the root
+//might need to fix the files paths in the files declareations
