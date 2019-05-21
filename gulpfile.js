@@ -22,6 +22,7 @@ const browserSync = require('browser-sync');
 
 //construct some file paths
 const files = {
+    buildPath: ['src/scripts/main.js', 'src/style/main.css'],
     imgPath: 'src/img/*.png',
     coreCssPath: 'src/core_scripts/*.css',//may need to explicity set order if this doesnt work?
     coreJsPath: 'src/core_scripts/*.js',//ditto ^^
@@ -121,6 +122,12 @@ function coreJsTask(){
     .pipe(sourcemaps.write(files.sourcemapsBuild))
     .pipe(dest(files.coreBuild))
 }
+function devBuild() {
+    return src(files.buildPath)
+    .pipe(copy('temp'))
+    .pipe(dest('./'));
+}
+
 /* function concatjsTask(){
     return src(files.conJsmain, files.conJscore)
     .pipe(concat('main.js'))
@@ -160,6 +167,7 @@ exports.nodeTask = nodeTask;
 exports.coreCssTask = coreCssTask;
 exports.coreJsTask = coreJsTask;
 exports.serve = serve;
+exports.devBuild = devBuild;
 /* exports.concatjsTask = concatjsTask;
 exports.concatCssTask = concatCssTask; */
 //set some series or parallels
@@ -184,6 +192,7 @@ serve
 );
 exports.devtst = series(
 cacheBustTask,
+devBuild,
 serve);
 //need to figure out task to use jsut the html from ./
 //to run against the css and js in the src folder.
