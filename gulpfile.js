@@ -67,7 +67,7 @@ function clean() {
 }
 //need task to copy over faviconslook at buffer
 function copyFav() {
-    return src('./favicon.ico')
+    return src('./favicon1.ico')
         .pipe(copy('dist', { prefix: 1 }))
         .pipe(dest('./'));
 }
