@@ -22,7 +22,7 @@ const browserSync = require('browser-sync');
 
 //construct some file paths
 const files = {
-        buildPath: ['src/scripts/main.js', 'src/style/main.css'],
+        //buildPath: ['src/scripts/main.js', 'src/style/main.css'],
         imgPath: 'src/img/*.png',
         coreCssPath: 'src/core_scripts/*.css', //may need to explicity set order if this doesnt work?
         coreJsPath: 'src/core_scripts/*.js', //ditto ^^
@@ -37,15 +37,16 @@ const files = {
         sourcemapsBuild: '../',
         imgBuild: './dist/img/',
         deletedPaths: './dist', //delete the dist dir before a new build
-        /* conJsmain: './dist/scripts/main.min.js',
-        conJscore: './dist/core_scripts/core.js',
-        conCssmain: './dist/styles/main.min.css',
-        conCsscore: './dist/core_scripts/core.css' */
+        tempBuild: './temp/',
+        jsTemp:  'temp/src/scripts/',
+        cssTemp: 'temp/src/style/',
+        htmlTemp: './index.html',
+        coreTemp: 'temp/core_scripts/'
     }
     //create our dev server
 function serve() {
     return browserSync.init({
-        server: './',
+        server: './temp',
         open: true,
         port: 3000
     });
@@ -56,7 +57,7 @@ var cbString = new Date().getTime();
 //try switching the return src value to ./ so it doesn't overwrite the index.html found there
 //will need to double check that it isn't replacing the src/index.html with that one from the root tho
 function cacheBustTask() {
-    return src(files.htmlPath)
+    return src('./index.html')
         .pipe(replace(/cb=\d+/, 'cb=' + cbString))
         .pipe(dest('.'));
 }
@@ -71,6 +72,7 @@ function copyFav() {
         .pipe(copy('dist', { prefix: 1 }))
         .pipe(dest('./'));
 }
+
 //need a minify image task for pngs
 function imgTask() {
     return src(files.imgPath)
@@ -126,23 +128,28 @@ function coreJsTask() {
         .pipe(sourcemaps.write(files.sourcemapsBuild))
         .pipe(dest(files.coreBuild))
 }
-
-function devBuild() {
-    return src(files.buildPath)
-        .pipe(copy('temp'))
-        .pipe(dest('./'));
+function copyJs() {
+    return src(files.jsPath)
+        .pipe(dest(files.jsTemp));
+}
+function copyCss(){
+    return src(files.cssPath)
+    .pipe(dest(files.cssTemp));
 }
 
-/* function concatjsTask(){
-    return src(files.conJsmain, files.conJscore)
-    .pipe(concat('main.js'))
-    .pipe(dest(files.jsBuild))
+function copyHtml() {
+    return src(files.htmlTemp)
+        .pipe(dest(files.tempBuild));
 }
-function concatCssTask(){
-    return src(files.conCssmain, files.conCsscore)
-    .pipe(concat('main.css'))
-    .pipe(dest(files.stylesBuild))
-} */
+function copyCoreCss(){
+    return src(files.coreCssPath)
+    .pipe(dest(files.coreTemp))
+}
+function copyCoreJs(){
+    return src(files.coreJsPath)
+    .pipe(dest(files.coreTemp))
+}
+
 
 //copy needed packages from node folder i.e leaflet
 //need to tweek code to just keep the js/css you need
@@ -150,6 +157,7 @@ function concatCssTask(){
 function nodeTask() {
     return src(files.nodePath)
         .pipe(shell('node copyNode'))
+        .pipe(shell('node copyNodeTemp'))
 }
 //create some watch tasks
 function watchTask() {
@@ -172,9 +180,12 @@ exports.nodeTask = nodeTask;
 exports.coreCssTask = coreCssTask;
 exports.coreJsTask = coreJsTask;
 exports.serve = serve;
-exports.devBuild = devBuild;
-/* exports.concatjsTask = concatjsTask;
-exports.concatCssTask = concatCssTask; */
+exports.copyHtml = copyHtml;
+exports.copyJs = copyJs;
+exports.copyCss = copyCss;
+exports.copyCoreCss = copyCoreCss;
+exports.copyCoreJs = copyCoreJs;
+
 //set some series or parallels
 exports.default = series(
     clean,
@@ -196,12 +207,10 @@ exports.rebuild = series(
     serve
 );
 exports.devtst = series(
-    cacheBustTask,
-    devBuild,
+    nodeTask,
+    parallel(copyCss, copyJs, copyHtml, copyCoreCss, copyCoreJs),
     serve);
-//need to figure out task to use jsut the html from ./
-//to run against the css and js in the src folder.
-//and have that particular build be used by server
-//create a temp folder and pipe the css and js from styles
-//and scripts in src and the index.html from the root
-//might need to fix the files paths in the files declareations
+//got the temp folder build right so as to test against
+//need to figure out those css inline errors when i run
+//in the temp/testing folder
+//on second load after closing the map works...might need to remove cachebust task.

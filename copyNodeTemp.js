@@ -1,6 +1,7 @@
+//delete after testing is done
 const copyNodeModule = require('copy-node-modules');
 const srcDir = './';
-const dstDir = './dist';
+const dstDir = './temp';
 
 
 
