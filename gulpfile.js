@@ -41,7 +41,8 @@ const files = {
         jsTemp:  'temp/src/scripts/',
         cssTemp: 'temp/src/style/',
         htmlTemp: './index.html',
-        coreTemp: 'temp/core_scripts/'
+        coreTemp: 'temp/src/core_scripts/',
+        imgTemp: 'temp/src/img/'
     }
     //create our dev server
 function serve() {
@@ -59,7 +60,7 @@ var cbString = new Date().getTime();
 function cacheBustTask() {
     return src('./index.html')
         .pipe(replace(/cb=\d+/, 'cb=' + cbString))
-        .pipe(dest('.'));
+        .pipe(dest('./temp'));
 }
 //clean out build folder i.e dist
 function clean() {
@@ -70,7 +71,9 @@ function clean() {
 function copyFav() {
     return src('./favicon1.ico')
         .pipe(copy('dist', { prefix: 1 }))
-        .pipe(dest('./'));
+        .pipe(copy('./', {prefix: 1 }))
+        .pipe(dest('./'))
+        .pipe(dest(files.tempBuild));
 }
 
 //need a minify image task for pngs
@@ -79,6 +82,7 @@ function imgTask() {
         .pipe(plumber())
         .pipe(imagemin())
         .pipe(dest(files.imgBuild))
+        .pipe(dest(files.imgTemp))
 }
 //need a minify the css and html after concat too
 
@@ -143,11 +147,11 @@ function copyHtml() {
 }
 function copyCoreCss(){
     return src(files.coreCssPath)
-    .pipe(dest(files.coreTemp))
+    .pipe(dest(files.coreTemp));
 }
 function copyCoreJs(){
     return src(files.coreJsPath)
-    .pipe(dest(files.coreTemp))
+    .pipe(dest(files.coreTemp));
 }
 
 
@@ -208,7 +212,7 @@ exports.rebuild = series(
 );
 exports.devtst = series(
     nodeTask,
-    parallel(copyCss, copyJs, copyHtml, copyCoreCss, copyCoreJs),
+    parallel(copyCss, copyJs, copyHtml, copyCoreCss, copyCoreJs, imgTask, copyFav),
     serve);
 //got the temp folder build right so as to test against
 //need to figure out those css inline errors when i run
