@@ -165,12 +165,14 @@ function nodeTask() {
 }
 //create some watch tasks
 function watchTask() {
-    watch([files.cssPath, files.jsPath, files.htmlPath]),
-        cacheBustTask,
+    watch([files.cssPath, files.jsPath, files.htmlPath], {events: 'all'}),
         parallel(cssTask, jsTask, htmlTask),
         parallel(coreCssTask, coreJsTask),
         serve
 }
+function watchHtml() {
+    watch('./index.html', copyHtml);       
+};
 //create exported tasks to make it easier to plug into other stuff e.g series parallel etc
 exports.cacheBustTask = cacheBustTask;
 exports.copyFav = copyFav;
@@ -180,6 +182,7 @@ exports.jsTask = jsTask;
 exports.htmlTask = htmlTask;
 exports.clean = clean;
 exports.watchTask = watchTask;
+exports.watchHtml = watchHtml;
 exports.nodeTask = nodeTask;
 exports.coreCssTask = coreCssTask;
 exports.coreJsTask = coreJsTask;
