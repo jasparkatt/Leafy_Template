@@ -218,8 +218,8 @@ exports.rebuild = series(
 exports.devtst = series(
     nodeTask,
     parallel(copyCss, copyJs, copyHtml, copyCoreCss, copyCoreJs, imgTask, copyFav),
-    serve);
-//got the temp folder build right so as to test against
-//need to figure out those css inline errors when i run
-//in the temp/testing folder
-//on second load after closing the map works...might need to remove cachebust task.
+    serve,
+    watchHtml
+    );
+//the above export.devtst only watches html 1 time on the first pass
+//need to figure out how to keep watch active after initial run of devtst
