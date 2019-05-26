@@ -2,7 +2,6 @@ var mymap;
 var lyrOsm;
 var lyrTopo;
 var lyrImagery;
-//var lyrParcels;
 var mrkCurrentLocation;
 var ctlAttribute;
 var ctlScale;
@@ -18,31 +17,18 @@ var ctlLayers;
 var ctlBasemaps;
 var ctlOverlays;
 
-
-/*var myStyle = {
-                color: "#994c00",
-                weight: 4,
-                opacity: 1,
-                dashArray: "4",
-                fillOpacity: 1
-            };*/
-
 $(document).ready(function(){
     mymap = L.map('map', {center:[44.505, -89.548], zoom:9, zoomControl:false, attributionControl:false});
     lyrOsm = L.tileLayer.provider('OpenStreetMap.Mapnik');
     lyrTopo = L.tileLayer.provider('Thunderforest.Outdoors', {apikey:  'c5765bcedc4c418493a2e018e456b08a'});
     lyrImagery = L.tileLayer.provider('Esri.WorldImagery');
-//    lyrParcels = L.esri.featureLayer({
-//        url:"https://dnrmaps.wi.gov/arcgis/rest/services/DW_Map_Dynamic/EN_Basic_Basemap_WTM_Ext_Dynamic_L16/MapServer/3",
-//        style   :myStyle
-//    });
+
     mymap.addLayer(lyrOsm);
 
     objBasemaps = {
         "Open Street Maps":lyrOsm,
         "Topo":lyrTopo,
         "Imagery":lyrImagery
-//        "Ownership":lyrParcels
     };
 
     objOverlays = {};

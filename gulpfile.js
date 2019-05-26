@@ -166,7 +166,7 @@ function nodeTask() {
 //create some watch tasks
 //this watcher needs to be tested yet
 function watchTask() {
-    watch(files.cssPath, files.jsPath, files.htmlPath,
+    watch([files.cssPath, files.jsPath, files.htmlPath],
         series(cssTask, jsTask, htmlTask, coreCssTask, coreJsTask)),
         console.log('updating dist as something changed in src');
 };
