@@ -164,14 +164,16 @@ function nodeTask() {
         .pipe(shell('node copyNodeTemp'))
 }
 //create some watch tasks
+//this watcher needs to be tested yet
 function watchTask() {
-    watch([files.cssPath, files.jsPath, files.htmlPath], {events: 'all'}),
-        parallel(cssTask, jsTask, htmlTask),
-        parallel(coreCssTask, coreJsTask),
-        serve
-}
+    watch(files.cssPath, files.jsPath, files.htmlPath,
+        series(cssTask, jsTask, htmlTask, coreCssTask, coreJsTask)),
+        console.log('updating dist as something changed in src');
+};
+//this watcher works now
 function watchHtml() {
-    watch('./index.html', copyHtml);       
+    watch('./index.html', copyHtml);
+    console.log('updating temp html as root html changed');     
 };
 //create exported tasks to make it easier to plug into other stuff e.g series parallel etc
 exports.cacheBustTask = cacheBustTask;
