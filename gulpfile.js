@@ -175,6 +175,11 @@ function watchHtml() {
     watch('./index.html', copyHtml);
     console.log('updating temp html as root html changed');     
 };
+//watch node_modules to see if anything is added, run nodetask if so
+function watchNode() {
+    watch('./node_modules/', nodeTask);
+    console.log('updating node modules');
+};
 //create exported tasks to make it easier to plug into other stuff e.g series parallel etc
 exports.cacheBustTask = cacheBustTask;
 exports.copyFav = copyFav;
@@ -185,6 +190,7 @@ exports.htmlTask = htmlTask;
 exports.clean = clean;
 exports.watchTask = watchTask;
 exports.watchHtml = watchHtml;
+exports.watchNode = watchNode;
 exports.nodeTask = nodeTask;
 exports.coreCssTask = coreCssTask;
 exports.coreJsTask = coreJsTask;
