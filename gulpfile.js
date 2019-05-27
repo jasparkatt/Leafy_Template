@@ -1,7 +1,7 @@
 "use strict";
 //load plugins
 
-const { src, dest, watch, series, parallel } = require('gulp');
+const { src, dest, watch, lastRun, series, parallel } = require('gulp');
 const newer = require("gulp-newer"); //pass only source files that
 //are newer than corresponding destination files
 const del = require("del"); //clean out folders
@@ -69,7 +69,7 @@ function clean() {
 }
 //need task to copy over faviconslook at buffer
 function copyFav() {
-    return src('./favicon1.ico')
+    return src('./favicon1.ico', { since: lastRun(copyFav) })
         .pipe(copy('dist', { prefix: 1 }))
         .pipe(copy('./', {prefix: 1 }))
         .pipe(dest('./'))
@@ -78,7 +78,7 @@ function copyFav() {
 
 //need a minify image task for pngs
 function imgTask() {
-    return src(files.imgPath)
+    return src(files.imgPath, { since: lastRun(imgTask) })
         .pipe(plumber())
         .pipe(imagemin())
         .pipe(dest(files.imgBuild))
@@ -88,7 +88,7 @@ function imgTask() {
 
 //css task
 function cssTask() {
-    return src(files.cssPath)
+    return src(files.cssPath, { since: lastRun(cssTask) })
         .pipe(plumber())
         .pipe(cleanCss())
         .pipe(rename('main.min.css'))
@@ -96,7 +96,7 @@ function cssTask() {
 }
 //js task
 function jsTask() {
-    return src(files.jsPath)
+    return src(files.jsPath, { since: lastRun(jsTask) })
         .pipe(plumber())
         .pipe(uglify())
         .pipe(rename('main.min.js'))
@@ -104,7 +104,7 @@ function jsTask() {
 }
 //html tasks
 function htmlTask() {
-    return src(files.htmlPath)
+    return src(files.htmlPath, { since: lastRun(htmlTask) })
         .pipe(plumber())
         .pipe(htmlmin({ removeComments: true }))
         .pipe(htmlmin({ collapseWhitespace: true }))
@@ -133,16 +133,16 @@ function coreJsTask() {
         .pipe(dest(files.coreBuild))
 }
 function copyJs() {
-    return src(files.jsPath)
+    return src(files.jsPath, { since: lastRun(copyJs) })
         .pipe(dest(files.jsTemp));
 }
 function copyCss(){
-    return src(files.cssPath)
+    return src(files.cssPath, { since: lastRun(copyCss) })
     .pipe(dest(files.cssTemp));
 }
 
 function copyHtml() {
-    return src(files.htmlTemp)
+    return src(files.htmlTemp, { since: lastRun(copyHtml) })
         .pipe(dest(files.tempBuild));
 }
 function copyCoreCss(){
@@ -159,9 +159,10 @@ function copyCoreJs(){
 //need to tweek code to just keep the js/css you need
 //can probably do something similar to this for plugins folder copyover
 function nodeTask() {
-    return src(files.nodePath)
+    return src(files.nodePath, { since: lastRun(nodeTask) })
         .pipe(shell('node copyNode'))
         .pipe(shell('node copyNodeTemp'))
+
 }
 //create some watch tasks
 //this watcher needs to be tested yet
@@ -229,3 +230,4 @@ exports.devtst = series(
     );
 //the above export.devtst only watches html 1 time on the first pass
 //need to figure out how to keep watch active after initial run of devtst
+//need to set up export out of src core_scripts of folders in there e.g leaflet mapkey
