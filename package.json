@@ -43,6 +43,7 @@
     "gulp-uglify": "^3.0.2"
   },
   "dependencies": {
+    "@turf/turf": "^5.1.6",
     "bootstrap": "^4.3.1",
     "esri-leaflet": "^2.2.4",
     "esri-leaflet-geocoder": "^2.2.14",
@@ -52,7 +53,9 @@
     "leaflet": "^1.5.1",
     "leaflet-ajax": "^2.1.0",
     "leaflet-easybutton": "^2.4.0",
+    "leaflet-geometryutil": "^0.9.1",
     "leaflet-providers": "^1.7.0",
+    "leaflet-sprite": "^1.0.0",
     "leaflet-styleeditor": "^0.1.12",
     "leaflet.awesome-markers": "^2.0.5",
     "leaflet.markercluster": "^1.4.1",
