@@ -214,7 +214,8 @@ exports.cleanCor = series(
     nodeTask,
     parallel(cssTask, jsTask, htmlTask),
     parallel(imgTask, copyFav),
-    parallel(coreCssTask, coreJsTask)
+    parallel(coreCssTask, coreJsTask),
+    parallel(copyCss, copyJs, copyHtml, copyCoreCss, copyCoreJs, imgTask, copyFav)
     // parallel(concatjsTask, concatCssTask)
 );
 exports.rebuild = series(
