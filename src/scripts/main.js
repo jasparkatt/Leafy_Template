@@ -6,7 +6,7 @@ var mrkCurrentLocation;
 var ctlAttribute;
 var ctlScale;
 var ctlPan;
-var ctlZoomslider;
+//var ctlZoomslider;
 var ctlMouseposition;
 var ctlMeasure;
 var ctlEasybutton;
@@ -36,7 +36,7 @@ $(document).ready(function(){
     ctlLayers = L.control.layers(objBasemaps, objOverlays).addTo(mymap);
 
     ctlPan = L.control.pan().addTo(mymap);
-    ctlZoomslider = L.control.zoomslider({position:'topright'}).addTo(mymap);
+    //ctlZoomslider = L.control.zoomslider({position:'topright'}).addTo(mymap);
     ctlScale = L.control.scale({position:'bottomleft', imperial:true}).addTo(mymap);
     ctlMouseposition = L.control.mousePosition().addTo(mymap);
     ctlMeasure = L.control.polylineMeasure({unit:'landmiles', showBearings:true}).addTo(mymap);
